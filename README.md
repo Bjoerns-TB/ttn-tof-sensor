@@ -11,7 +11,7 @@ VL53L0X sensor.
 
 Software and libraries used :
 
-LMIC https://github.com/matthijskooijman/arduino-lmic
+LMIC https://github.com/matthijskooijman/arduino-lmic	
 LowPower library https://github.com/rocketscream/Low-Power
 special adcvcc library from Charles (see : https://www.thethingsnetwork.org/forum/t/full-arduino-mini-lorawan-and-1-3ua-sleep-mode/8059/32?u=lex_ph2lb )
 VL53L0X library https://github.com/pololu/vl53l0x-arduino
