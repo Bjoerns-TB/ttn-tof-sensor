@@ -1,0 +1,128 @@
+[
+    {
+        "id": "351d581f.905328",
+        "type": "function",
+        "z": "40886d4f.dcf754",
+        "name": "Decrypt Payload",
+        "func": "var msg1 = { payload: msg.payload.length };\nmsg1.payload = msg.payload.payload_fields.batt;\n\nvar msg2 = { payload: msg.payload.length };\nmsg2.payload = msg.payload.payload_fields.distance;\n\n//rssi\nvar msg5 = { payload: msg.payload.length };\nmsg5.payload = msg.payload.metadata.gateways[0].rssi;\n\n//snr\nvar msg6 = { payload: msg.payload.length };\nmsg6.payload = msg.payload.metadata.gateways[0].snr;\n\nvar msg7 = {};\nmsg7.payload = [{\"batt\": msg1.payload, \"distance\": msg2.payload, \"rssi\": msg5.payload, \"snr\": msg6.payload}];\n\n\nreturn [msg7];\n\n\n",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 621,
+        "y": 909,
+        "wires": [
+            [
+                "2e150446.55e0ac"
+            ]
+        ]
+    },
+    {
+        "id": "4da43b25.f3e314",
+        "type": "switch",
+        "z": "40886d4f.dcf754",
+        "name": "",
+        "property": "payload.app_id",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "your application name",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 465,
+        "y": 910,
+        "wires": [
+            [
+                "351d581f.905328"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "28c75e1f.375772",
+        "type": "json",
+        "z": "40886d4f.dcf754",
+        "name": "",
+        "x": 346,
+        "y": 910,
+        "wires": [
+            [
+                "4da43b25.f3e314"
+            ]
+        ]
+    },
+    {
+        "id": "7a6ee0bd.6a1e2",
+        "type": "mqtt in",
+        "z": "40886d4f.dcf754",
+        "name": "MQTT Node - TheThingsNetwork",
+        "topic": "#",
+        "qos": "2",
+        "broker": "ec90afde.50aa1",
+        "x": 145,
+        "y": 910,
+        "wires": [
+            [
+                "28c75e1f.375772"
+            ]
+        ]
+    },
+    {
+        "id": "30c8563b.77caba",
+        "type": "comment",
+        "z": "40886d4f.dcf754",
+        "name": "TOF - ba0010",
+        "info": "",
+        "x": 144,
+        "y": 946,
+        "wires": []
+    },
+    {
+        "id": "2e150446.55e0ac",
+        "type": "influxdb out",
+        "z": "40886d4f.dcf754",
+        "influxdb": "67376721.222838",
+        "name": "",
+        "measurement": "your measurement",
+        "precision": "",
+        "retentionPolicy": "",
+        "x": 780,
+        "y": 908,
+        "wires": []
+    },
+    {
+        "id": "ec90afde.50aa1",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "eu.thethings.network",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "60",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "67376721.222838",
+        "type": "influxdb",
+        "z": "",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "your database",
+        "name": "env",
+        "usetls": false,
+        "tls": ""
+    }
+]
