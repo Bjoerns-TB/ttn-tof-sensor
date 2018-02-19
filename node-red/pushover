@@ -1,0 +1,105 @@
+[
+    {
+        "id": "ea5b0a80.c3ca88",
+        "type": "pushover",
+        "z": "c02bff1d.bc531",
+        "name": "",
+        "device": "",
+        "title": "",
+        "priority": 0,
+        "sound": "pushover",
+        "url": "",
+        "url_title": "",
+        "x": 969,
+        "y": 401,
+        "wires": []
+    },
+    {
+        "id": "be79a7ca.5eb6e8",
+        "type": "influxdb in",
+        "z": "c02bff1d.bc531",
+        "influxdb": "67376721.222838",
+        "name": "",
+        "query": "select * from tof ORDER BY time DESC LIMIT 1 ",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "x": 365,
+        "y": 401,
+        "wires": [
+            [
+                "7bf611b8.f9d6c"
+            ]
+        ]
+    },
+    {
+        "id": "5d8e2c20.45bc04",
+        "type": "inject",
+        "z": "c02bff1d.bc531",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "300",
+        "crontab": "",
+        "once": false,
+        "x": 92,
+        "y": 401,
+        "wires": [
+            [
+                "be79a7ca.5eb6e8"
+            ]
+        ]
+    },
+    {
+        "id": "5a8c1080.17a1f",
+        "type": "delay",
+        "z": "c02bff1d.bc531",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "8",
+        "rateUnits": "hour",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 794.5,
+        "y": 401,
+        "wires": [
+            [
+                "ea5b0a80.c3ca88"
+            ]
+        ]
+    },
+    {
+        "id": "7bf611b8.f9d6c",
+        "type": "function",
+        "z": "c02bff1d.bc531",
+        "name": "",
+        "func": "var msg1 = {};\nvar msg2 = {};\nmsg1.payload = msg.payload[0].distance;\nmsg2.payload = \"Post\";\nif (msg1.payload <= 50){\n    return msg2;\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 638,
+        "y": 401,
+        "wires": [
+            [
+                "5a8c1080.17a1f"
+            ]
+        ]
+    },
+    {
+        "id": "67376721.222838",
+        "type": "influxdb",
+        "z": "",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "env",
+        "name": "env",
+        "usetls": false,
+        "tls": ""
+    }
+]
